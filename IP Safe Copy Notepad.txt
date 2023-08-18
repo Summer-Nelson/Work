@@ -459,10 +459,11 @@ function propertiesForm(){
 
         $path = $details.manager
         $Manager = Get-ADUser -Identity "$path" -Properties *
+        
         $global:managerList | ForEach-Object{
 
             if($Manager.Name -eq $_){
-                $global:selectedManager = $Manager.CN
+                $global:selectedManager = $Manager
                 $flag = 1
             }
             elseif(($ListManager.SelectedIndex -eq ($global:managerList.Length-1)) -and ($flag -eq 0)){
@@ -470,8 +471,9 @@ function propertiesForm(){
                         
                 $ListManager.Items.Add($Manager.Name)
                 $ListManager.SelectedIndex ++
-                          
-                $global:selectedManager = $Manager.CN
+                
+                #return CN not name       
+                $global:selectedManager = $Manager
                 $flag = 1
             }
             elseif($flag -eq 0){
@@ -489,18 +491,71 @@ function propertiesForm(){
                 $flag = 1
             }
             elseif(($ListOffice.SelectedIndex -eq ($global:officeList.Length-1)) -and ($flag -eq 0)){
-                $global:managerList += $details.office
+                $global:officeList += $details.office
                         
                 $ListOffice.Items.Add($details.office)
                 $ListOffice.SelectedIndex ++
 
                 #Copy Address Information
-                $global:streetList.Items.Add($details.StreetAddress)
-                $global:selectedCity.Items.Add($details.City)
-                $global:selectedZip.Items.Add($details.PostalCode)
-                $global:selectedRegion.Items.Add($details.State)
-                $global:selectedCountry.Items.Add($details.Country)
-                       
+
+                $global:companyList += $details.Company
+                $global:streetList += $details.StreetAddress
+                $global:cityList  += $details.City
+                $global:zipList += $details.PostalCode
+                $global:regionList += $details.State
+                $global:countryList += $details.Country
+
+                 # Add the Company
+                $TextCompany.text = $companyList[$ListOffice.SelectedIndex]       
+                $TextCompany.location = New-Object System.Drawing.Point(250,350)
+                $TextCompany.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextCompany)
+                $global:selectedCompany = $global:companyList[$ListOffice.SelectedIndex]  
+
+                # Add the Street
+                $TextStreet.text = $streetList[$ListOffice.SelectedIndex]       
+                $TextStreet.location = New-Object System.Drawing.Point(250,400)
+                $TextStreet.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextStreet)
+                $global:selectedStreet = $global:streetList[$ListOffice.SelectedIndex]
+
+                # Add the City
+                $TextCity.text = $cityList[$ListOffice.SelectedIndex]       
+                $TextCity.location = New-Object System.Drawing.Point(250,450)
+                $TextCity.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextCity)
+                $global:selectedCity = $global:cityList[$ListOffice.SelectedIndex]
+
+                # Add the Zip
+                $TextZip.text = $zipList[$ListOffice.SelectedIndex]       
+                $TextZip.location = New-Object System.Drawing.Point(250,500)
+                $TextZip.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextZip)
+                $global:selectedZip = $global:zipList[$ListOffice.SelectedIndex]
+
+                # Add the Region
+                $TextRegion.text = $regionList[$ListOffice.SelectedIndex]       
+                $TextRegion.location = New-Object System.Drawing.Point(250,550)
+                $TextRegion.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextRegion)
+                $global:selectedRegion = $global:regionList[$ListOffice.SelectedIndex]
+
+                # Add the Country
+                $TextCountry.text = $countryList[$ListOffice.SelectedIndex]       
+                $TextCountry.location = New-Object System.Drawing.Point(250,600)
+                $TextCountry.Font = ‘Microsoft Sans Serif,10’
+                $formProperties.Controls.Add($TextCountry)
+                $global:selectedCountry = $global:countryList[$ListOffice.SelectedIndex]
+
+                        
+                        
+                $ListDept.Items.Add($details.department)
+                $ListDept.SelectedIndex ++
+
+                $global:deptList += $ListDept.Text
+
+                $global:selectedDept = $ListDept.Text
+       
                 $global:selectedOffice = $officeList[$ListOffice.SelectedIndex]
                 $flag = 1
             }
@@ -519,12 +574,14 @@ function propertiesForm(){
                 $flag = 1
             }
             elseif(($ListDept.SelectedIndex -eq ($global:deptList[$ListOffice.SelectedIndex].Length-1)) -and ($flag -eq 0)){
-                $global:deptList += $ListDept.Text
+                #$global:deptList += $ListDept.Text
                         
                 $ListDept.Items.Add($details.department)
                 $ListDept.SelectedIndex ++
-                          
-                #$global:selectedDept = $ListDept[$ListDept.SelectedIndex]
+
+                $global:deptList += $ListDept.Text
+                #$global:deptList.Items.Add($details.department)         
+
                 $global:selectedDept = $ListDept.Text
                 $flag = 1
             }
