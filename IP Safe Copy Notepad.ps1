@@ -549,13 +549,12 @@ function propertiesForm(){
 
                         
                         
+                $global:deptList += $details.department
+                        
                 $ListDept.Items.Add($details.department)
                 $ListDept.SelectedIndex ++
-
-                $global:deptList += $ListDept.Text
-
-                $global:selectedDept = $ListDept.Text
        
+                $global:selectedDept = $deptList[$ListOffice.SelectedIndex]
                 $global:selectedOffice = $officeList[$ListOffice.SelectedIndex]
                 $flag = 1
             }
@@ -574,15 +573,12 @@ function propertiesForm(){
                 $flag = 1
             }
             elseif(($ListDept.SelectedIndex -eq ($global:deptList[$ListOffice.SelectedIndex].Length-1)) -and ($flag -eq 0)){
-                #$global:deptList += $ListDept.Text
+                $global:deptList += $details.department
                         
                 $ListDept.Items.Add($details.department)
                 $ListDept.SelectedIndex ++
-
-                $global:deptList += $ListDept.Text
-                #$global:deptList.Items.Add($details.department)         
-
-                $global:selectedDept = $ListDept.Text
+       
+                $global:selectedDept = $deptList[$ListOffice.SelectedIndex]
                 $flag = 1
             }
             elseif($flag -eq 0){
@@ -702,7 +698,6 @@ function propertiesForm(){
 
     $formProperties.Dispose()
 }
-
 <#
 Name: nameForm
 Purpose: Create form for the selection of the users name
